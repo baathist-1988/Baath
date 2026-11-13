@@ -1,0 +1,201 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private authenticated fan profile storing personal Slendytubbies flair and status preferences.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the signed-in fan."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Chosen fan nickname displayed in the group."
+        },
+        "tubbyFlair": {
+          "type": "string",
+          "enum": ["Guardian", "Tinky Winky", "Dipsy", "Laa-Laa", "Po", "Newborn"],
+          "description": "Selected Slendytubbies character flair badge."
+        },
+        "statusMessage": {
+          "type": "string",
+          "description": "Retro 2013 personal status tagline."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was created (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was last updated (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "displayName", "tubbyFlair", "statusMessage", "createdAt", "updatedAt"]
+    },
+    "FanMember": {
+      "title": "FanMember",
+      "description": "Public non-PII fan club member card visible to other signed-in members of the group.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the member."
+        },
+        "groupId": {
+          "type": "string",
+          "description": "Group identifier ('slendytubbies-onlyfans')."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Public fan nickname."
+        },
+        "tubbyFlair": {
+          "type": "string",
+          "enum": ["Guardian", "Tinky Winky", "Dipsy", "Laa-Laa", "Po", "Newborn"],
+          "description": "Selected Slendytubbies character flair badge."
+        },
+        "statusMessage": {
+          "type": "string",
+          "description": "Retro 2013 status message."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of first join (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last profile/presence update (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["userId", "groupId", "displayName", "tubbyFlair", "statusMessage", "createdAt", "updatedAt"]
+    },
+    "ChatChannel": {
+      "title": "ChatChannel",
+      "description": "Topic channel in the Slendytubbies onlyfans group (e.g., general, lore, custard-hunt, sightings-2013).",
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "type": "string",
+          "description": "Group identifier ('slendytubbies-onlyfans')."
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL/channel slug without # prefix."
+        },
+        "name": {
+          "type": "string",
+          "description": "Display channel title."
+        },
+        "description": {
+          "type": "string",
+          "description": "Short topic description for fans."
+        },
+        "sortOrder": {
+          "type": "integer",
+          "description": "Numeric ordering index for channel tabs."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "UID of the fan who initialized or created the channel."
+        },
+        "lastMessageText": {
+          "type": "string",
+          "description": "Latest message preview text."
+        },
+        "lastMessageSender": {
+          "type": "string",
+          "description": "Nickname of the fan who sent the latest message."
+        },
+        "lastMessageAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest message (FieldValue.serverTimestamp())."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when channel was created (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when channel metadata was last updated (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["groupId", "slug", "name", "description", "sortOrder", "createdBy", "createdAt", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "A glossy bubble chat message posted inside a topic channel.",
+      "type": "object",
+      "properties": {
+        "channelId": {
+          "type": "string",
+          "description": "Parent channel document ID."
+        },
+        "groupId": {
+          "type": "string",
+          "description": "Group identifier ('slendytubbies-onlyfans')."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the message author."
+        },
+        "senderName": {
+          "type": "string",
+          "description": "Denormalized fan nickname of the author."
+        },
+        "senderFlair": {
+          "type": "string",
+          "enum": ["Guardian", "Tinky Winky", "Dipsy", "Laa-Laa", "Po", "Newborn"],
+          "description": "Denormalized Slendytubbies character flair badge."
+        },
+        "text": {
+          "type": "string",
+          "description": "Message body displayed inside the glossy speech bubble."
+        },
+        "replyToId": {
+          "type": "string",
+          "description": "Optional message ID being replied to."
+        },
+        "replyToSender": {
+          "type": "string",
+          "description": "Optional author name of the quoted message."
+        },
+        "replyToText": {
+          "type": "string",
+          "description": "Optional preview snippet of the quoted message."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the message was sent (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": ["channelId", "groupId", "senderId", "senderName", "senderFlair", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user profile settings scoped strictly to the owning UID."
+    },
+    "/fan_members/{userId}": {
+      "schema": { "$ref": "#/entities/FanMember" },
+      "description": "Public non-PII fan directory cards for the Slendytubbies onlyfans group."
+    },
+    "/channels/{channelId}": {
+      "schema": { "$ref": "#/entities/ChatChannel" },
+      "description": "Topic channels in the Slendytubbies onlyfans group."
+    },
+    "/channels/{channelId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Real-time chat messages belonging to a topic channel."
+    }
+  }
+}
